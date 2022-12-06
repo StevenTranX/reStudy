@@ -1,6 +1,7 @@
 import { element } from 'prop-types';
 import { useContext, useState } from 'react';
 import { createContext } from 'react';
+import useLocalStorage from '../Hooks/useLocalStorage';
 
 const GalleryContext = createContext();
 const fakeData = [
@@ -36,8 +37,10 @@ const fakeData = [
   },
 ];
 function GalleryProvider(props) {
-  const [photos, setPhotos] = useState(fakeData);
-  const [cartItems, setCartItems] = useState([]);
+    const {storedValue, setValue} = useLocalStorage('photo', fakeData)
+    const {storedValue : storedCart, setValue : setStoredCart} = useLocalStorage('cartItem', [])
+  const [photos, setPhotos] = useState(storedValue);
+  const [cartItems, setCartItems] = useState(storedCart);
   const [favoriteList, setFavoriteList] = useState([]);
   const toggleFavorite = (photoId) => {
     const updatedArray = photos.map((photo) => {
@@ -50,6 +53,8 @@ function GalleryProvider(props) {
     // * ta sẽ tạo ra 1 updated Array bằng cách map lại data
     // * Duyệt map lại data 1 lần nữa, nếu photo.id = photoId thì trả ra cái photo đó, kèm theo isFavorite toggle !isFavorite
     // * Cuối cùng trả ra photo đó và setPhotos array mới
+    setValue(updatedArray)
+
   };
   const addToCart = (newItem) => {
     setCartItems((prevItems) => {
@@ -58,10 +63,15 @@ function GalleryProvider(props) {
       // [2, 5, 8, 1, 4].some(x => x > 10);  -> false
       const isExisted = prevItems.some((item) => item.id === newItem.id);
       // * Vậy hàm này mình sẽ hiểu là những phần tử trước đó có item id trùng với new item id không
-      if (isExisted) return [...prevItems];
+      if (isExisted) {
+        setStoredCart([...prevItems])
+        return [...prevItems]
+      } ;
       // * Nếu trùng thì trả ra cái phần tử giống trước đó chứ không add vào
+      setStoredCart([...prevItems, newItem])
       return [...prevItems, newItem];
       // còn không thì add thêm newItems
+      
     });
     // * Chỗ này phải dùng previousItems để lấy phần tử trước đó rồi mới thêm item mới vào
   };
@@ -73,9 +83,11 @@ function GalleryProvider(props) {
     // setCartItems(newCart);
 
     // ! Bài sửa của thầy
-    setCartItems((prevItems) =>
-      prevItems.filter((prevItems) => prevItems.id !== itemId)
-    );
+    setCartItems((prevItems) => {
+        const result = prevItems.filter((prevItems) => prevItems.id !== itemId)
+        setStoredCart(result)
+        return result;
+    });
   };
   const value = {
     photos,
