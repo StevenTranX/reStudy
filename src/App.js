@@ -1,5 +1,7 @@
 import React from 'react'
 import FetchingData from './Components/Advanced-React/HOC-highOrderComponent/FetchingData'
+import HandleValue from './Components/Advanced-React/render-props/HandleValue'
+import Title from './Components/Advanced-React/render-props/Title'
 // HOC = High Order Component Pattern
 // ?? HOC dùng để làm gì 
 // * Đôi khi ta phát triển nhiều cpn, nó sử dụng đi dụng lại 1 logic nào đó
@@ -10,7 +12,10 @@ import FetchingData from './Components/Advanced-React/HOC-highOrderComponent/Fet
 // HOC file bắt đầu với width
 const App = () => {
   return (
-    <div><FetchingData></FetchingData></div>
+    <div>
+      <Title  >{() => <h1>This is render props</h1> }</Title>
+      <HandleValue/>
+      </div>
   )
 }
 
