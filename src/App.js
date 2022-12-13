@@ -1,11 +1,8 @@
-import React from 'react'
-import Accordion from './Components/Advanced-React/composition/Accordion'
-import Editable from './Components/Advanced-React/composition/Editable'
-import FetchingData from './Components/Advanced-React/HOC-highOrderComponent/FetchingData'
-import HandleValue from './Components/Advanced-React/render-props/HandleValue'
-import Title from './Components/Advanced-React/render-props/Title'
+import React, { useState } from 'react';
+import Accordion from './Components/Advanced-React/composition/Accordion';
+import Switch from './Components/ReactJs/switch/Switch';
 // HOC = High Order Component Pattern
-// ?? HOC dùng để làm gì 
+// ?? HOC dùng để làm gì
 // * Đôi khi ta phát triển nhiều cpn, nó sử dụng đi dụng lại 1 logic nào đó
 // * Và ta muốn sử dụng cái logic đó cho nhiều component mà không cần viết đi viết lại nhiều lần thì ta dùng HOC.
 
@@ -16,13 +13,41 @@ import Title from './Components/Advanced-React/render-props/Title'
 // React Composition dùng để chia nhỏ các component của chúng ta ra những cpn nhỏ để dễ dàng xử lý và maintain, và d
 // nó còn hạn chế xử dung các đoạn code giống nhau và bị trùng ở nhiều cpn. 
 // Code có thể tái sử dụng
+function useToggle() {
+  const [on, setOn] = useState(false);
+  console.log(on);
+  const toggle = () => setOn(!on);
+  function getToggleProps({ onClick, ...rest }) {
+    return {
+      onClick: () => {},
+    };
+  }
+  // toggler props tổng hợp những prop của toggle bỏ vào 1 chỗ
+  return {
+    on,
+    toggle,
+    getToggleProps,
+  };
+}
+// Props Collection - Kentc Dodds - creator of Remix
 const App = () => {
+  const { on, toggleProps, getToggleProps } = useToggle();
   return (
     <div>
-      <Accordion></Accordion>
-      <Editable></Editable>
+      <Switch {...getToggleProps({ on })}></Switch>
+      <hr />
+      <button
+        {...getToggleProps({
+          onClick: () => {
+            return console.info('onButtonClicked');
+          },
+        })}
+        aria-label='custom-button'
+      >
+        {on ? 'on' : 'off'}
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
