@@ -1,18 +1,34 @@
 import React from "react";
-import Counter from "./Components/Advanced-React/stateReducer/control-props-copy/Counter";
-import useCounter from "./Components/Advanced-React/stateReducer/control-props-copy/useCounter";
-
+import Dropdown from "./Components/Advanced-React/inversion-of-control/Dropdown";
+const options = [
+  {
+    title: "FrontEnd Dev",
+    onClick() {},
+  },
+  {
+    title: "BackEnd Dev",
+    onClick() {},
+  },
+  {
+    title: "FullStack Dev",
+    onClick() {},
+  },
+];
 const App = () => {
-  const { count, handleDecrement, handleIncrement } = useCounter({
-    initial: 0,
-  });
   return (
     <div>
-      <Counter
-        count={count}
-        handleDecrement={handleDecrement}
-        handleIncrement={handleIncrement}
-      ></Counter>
+      {/* <Dropdown
+        options={options}
+        placeholder="Please Select Your Shits"
+        inputPlaceHolder={"Search your Job...."}
+        visibleIconCheck
+      /> */}
+      <Dropdown
+        options={options}
+        placeholder="Please Select Your Shits"
+        inputPlaceHolder={"Search your Job...."}
+        visibleIconCheck
+      />
     </div>
   );
 };
