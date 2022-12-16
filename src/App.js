@@ -1,21 +1,11 @@
-import React, { useCallback, useState } from 'react';
-import Count from './Components/Advanced-React/performance/Count';
-// React.memo(Component)
+import React from 'react';
+import Dropdown from './Components/Challenge/Inversion-of-Control/Dropdown';
+import FirebaseApp from './Firebase/FirebaseApp';
+
 const App = () => {
-  const [filter, setFilter] = useState('');
-  // useCallback( () => callback, [dependencies])
-  // memorized
-  const calculate = useCallback(() => {
-    setFilter('');
-  }, [setFilter]);
   return (
     <div>
-      <input
-        type='text'
-        className='p-4 rounded border border-gray-300'
-        onChange={(e) => setFilter(e.target.value)}
-      />
-      <Count calculate={calculate} />
+      <FirebaseApp></FirebaseApp>
     </div>
   );
 };
